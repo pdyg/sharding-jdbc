@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdy.mapper.MerchantIdMapper">
+    <insert id="save" parameterType="MerchantId" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO t_merchantid(code,type)
+        VALUES
+        (
+        #{code},#{type}
+        )
+    </insert>
+
+    <select id="get" parameterType="long" resultType="MerchantId">
+    	select * from t_merchantid where id = #{id}
+    </select>
+
+
+    <insert id="saveList" parameterType="MerchantId" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO t_merchantid(code,type)
+        VALUES
+        <foreach collection="list" index="s" item="m" separator=",">
+            (
+            #{m.code},#{m.type}
+            )
+
+        </foreach>
+
+    </insert>
+
+</mapper>

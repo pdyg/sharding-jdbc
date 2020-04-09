@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdy.mapper.TOrderMapper">
+
+
+    <insert id="save" parameterType="TOrder" >
+        INSERT INTO t_order(name,orderType,merchantId,orderAmount,create_time )
+        VALUES
+        (
+        #{name},#{orderType},#{merchantId},#{orderAmount},now()
+        )
+
+
+    </insert>
+
+
+
+
+    <insert id="saveList" parameterType="TOrder" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO t_order(name,orderType,merchantId,orderAmount,create_time)
+        VALUES
+        <foreach collection="list" index="s" item="m" separator=",">
+            (
+            #{m.name},#{m.orderType},#{m.merchantId},#{m.orderAmount},now()
+            )
+
+        </foreach>
+
+    </insert>
+    <!--采用相同的分片建就可以设置绑定表     注意字段类型不能为String 否则出现未知异常
+       如果id是奇数，那么只会执行下列语句
+    ds1 ::: SELECT
+        torder.id,
+        torder.`name`,
+        torder.orderType,
+        torder.merchantId,
+        torder.orderAmount,
+        torder.create_time
+        from t_order0 torder
+        inner JOIN t_merchantid  tmer on torder.merchantId=tmer.id
+        where torder.merchantId =? ::: [[454954440630206467]]
+     ds1 ::: SELECT
+        torder.id,
+        torder.`name`,
+        torder.orderType,
+        torder.merchantId,
+        torder.orderAmount,
+        torder.create_time
+        from t_order1 torder
+        inner JOIN t_merchantid  tmer on torder.merchantId=tmer.id
+        where torder.merchantId =? ::: [[454954440630206467]]
+
+
+    -->
+    <select id="getOrderInfo" parameterType="Long" resultType="TOrder">
+     SELECT
+        torder.id,
+        torder.`name`,
+        torder.orderType,
+        torder.merchantId,
+        torder.orderAmount,
+        torder.create_time
+        from t_order torder
+        inner JOIN t_merchantid  tmer on torder.merchantId=tmer.id
+        where torder.merchantId =#{merchantId}
+     </select>
+
+
+
+
+</mapper>
