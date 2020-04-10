@@ -53,7 +53,7 @@ sharding:
     config:
       sharding:
         props:
-       sql.show: true
+          sql.show: true
 #        props:
 #          sql.show: true
         tables:
