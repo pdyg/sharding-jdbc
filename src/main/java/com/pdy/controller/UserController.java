@@ -2,14 +2,13 @@ package com.pdy.controller;
 
 import com.pdy.entity.Address;
 import com.pdy.entity.User;
-import com.pdy.serivce.AddressServiceImpl;
-import com.pdy.serivce.UserServiceImpl;
+import com.pdy.mapper.AddressMapper;
+import com.pdy.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,9 +17,9 @@ import java.util.List;
 @Controller
 public class UserController {
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserMapper userServiceImpl;
     @Autowired
-    private AddressServiceImpl addressServiceImpl;
+    private AddressMapper addressServiceImpl;
 
     //默认使用雪花算法（snowflake）生成64bit的长整型数据。
     @RequestMapping("/user/save")

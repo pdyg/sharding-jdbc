@@ -50,23 +50,12 @@ sharding:
         jdbc-url: jdbc:mysql://192.168.1.188:3306/pdy_1
         username: root
         password: mysql
-#      ds0:
-#        type: com.alibaba.druid.pool.DruidDataSource
-#        driver-class-name: com.mysql.jdbc.Driver
-#        url: jdbc:mysql://192.168.1.188:3306/pdy_0
-#        username: root
-#        password: mysql
-#      # 数据源ds1
-#      ds1:
-#        type: com.alibaba.druid.pool.DruidDataSource
-#        driver-class-name: com.mysql.jdbc.Driver
-#        url: jdbc:mysql://192.168.1.188:3306/pdy_1
-#        username: root
-#        password: mysql
     config:
       sharding:
         props:
-          sql.show: true
+       sql.show: true
+#        props:
+#          sql.show: true
         tables:
           t_user:  #t_user表
             key-generator-column-name: id  #主键生成 雪花算法
@@ -79,24 +68,6 @@ sharding:
               inline: #行表达式
                 sharding-column: sex
                 algorithm-expression: t_user$->{sex % 2}
-
-
-            #            t_user:  #t_user表
-            #                        key-generator-column-name: id  #主键
-            #                        actual-data-nodes: ds${0..1}.t_user${0..1}    #数据节点,均匀分布
-            #                        database-strategy:   #分库策略
-            #                          inline: #行表达式
-            #                            sharding-column: id        #列名称，多个列以逗号分隔
-            #                            algorithm-expression: ds${id % 2}    #按模运算分配
-            #                        table-strategy:  #分表策略
-            #                          inline: #行表达式
-            #                            sharding-column: sex
-            #                            algorithm-expression: t_user${sex % 2}
-
-
-
-
-
           t_address:
             key-generator-column-name: id
             actual-data-nodes: ds${0..1}.t_address
@@ -138,4 +109,6 @@ sharding:
         binding-tables: #配置多个绑定表
           - t_order,t_merchantid
           - t_address,t_user
+        broadcast-tables: public_test_tb
+
 

@@ -8,8 +8,6 @@ import com.pdy.mapper.TOrderMapper;
 import com.pdy.mapper.TOrderPayMapper;
 import io.shardingsphere.core.constant.transaction.TransactionType;
 import io.shardingsphere.transaction.annotation.ShardingTransactionType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +33,6 @@ public class TOrderServiceImpl {
     @Autowired
     private TOrderPayMapper tOrderPayMapper;
 
-    Logger log = LoggerFactory.getLogger(TOrderServiceImpl.class);
 
     // 本地事务
     //@ShardingTransactionType(TransactionType.LOCAL)
@@ -56,7 +53,6 @@ public class TOrderServiceImpl {
 
             }
             merchantIdMapper.saveList(merchantIdList);
-
 
 
 
@@ -85,10 +81,10 @@ public class TOrderServiceImpl {
 
 
             }
+            //测试事物
             int testint=10/0 ;
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            log.error("错误了", e);
             resultMaps.put("msg", "错误");
             resultMaps.put("success", false);
             return resultMaps;

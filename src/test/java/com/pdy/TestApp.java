@@ -1,19 +1,13 @@
 package com.pdy;
 
-import com.pdy.entity.Address;
-import com.pdy.entity.MerchantId;
-import com.pdy.entity.TOrder;
-import com.pdy.entity.TOrderPay;
+import com.pdy.entity.*;
 import com.pdy.mapper.MerchantIdMapper;
+import com.pdy.mapper.PublicTestMapper;
 import com.pdy.mapper.TOrderMapper;
 import com.pdy.mapper.TOrderPayMapper;
-import com.pdy.serivce.AddressService;
 import com.pdy.serivce.AddressServiceImpl;
 import com.pdy.serivce.TOrderServiceImpl;
-import io.shardingsphere.shardingjdbc.jdbc.adapter.AbstractConnectionAdapter;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -27,7 +21,7 @@ import java.util.List;
  */
 @SpringBootTest
 public class TestApp {
-    Logger log = LoggerFactory.getLogger(TestApp.class);
+//    Logger log = LoggerFactory.getLogger(TestApp.class);
     @Autowired
     private AddressServiceImpl addressService;
     @Autowired
@@ -38,6 +32,8 @@ public class TestApp {
     private TOrderPayMapper tOrderPayMapper;
     @Autowired
     private TOrderServiceImpl tOrderServiceImpl;
+    @Autowired
+    private PublicTestMapper publicTestMapper;
 
     @Test
     public void testpage(){
@@ -149,9 +145,25 @@ public class TestApp {
             System.out.println(tOrder.toString());
         }
     }
+    //测试事物
     @Test
     public void Transactional(){
-        log.info(tOrderServiceImpl.addOrderData().toString());
+        tOrderServiceImpl.addOrderData().toString();
     }
+
+    @Test
+    public void TestDemo(){
+        for (int i = 0; i <5 ; i++) {
+            PublicTest test=new PublicTest();
+            test.setCode("code"+i); ;
+            test.setName("test"+i);
+            test.setPid("1112344444"+i);
+            test.setType(i%2);
+            test.setLit(i);
+            publicTestMapper.save(test);
+        }
+
+    }
+
 
 }

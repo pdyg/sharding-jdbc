@@ -106,14 +106,17 @@
         </dependency>
 
 
-
         <!-- Apache ShardingSphere -->
         <!--<dependency>-->
             <!--<groupId>org.apache.shardingsphere</groupId>-->
             <!--<artifactId>sharding-jdbc-spring-boot-starter</artifactId>-->
             <!--<version>4.0.0-RC3</version>-->
         <!--</dependency>-->
-
+        <!--<dependency>-->
+            <!--<groupId>org.apache.shardingsphere</groupId>-->
+            <!--<artifactId>sharding-jdbc-core</artifactId>-->
+            <!--<version>4.0.0</version>-->
+        <!--</dependency>-->
 
         <!--mybatis-generator包-->
         <dependency>
@@ -124,14 +127,14 @@
 
 
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.25</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.slf4j</groupId>-->
+            <!--<artifactId>slf4j-log4j12</artifactId>-->
+            <!--<version>1.7.25</version>-->
+        <!--</dependency>-->
 
 
-        
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
