@@ -7,7 +7,6 @@ import com.pdy.mapper.MerchantIdMapper;
 import com.pdy.mapper.TOrderMapper;
 import com.pdy.mapper.TOrderPayMapper;
 import io.shardingsphere.core.constant.transaction.TransactionType;
-import io.shardingsphere.transaction.annotation.ShardingTransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +36,6 @@ public class TOrderServiceImpl {
     // 本地事务
     //@ShardingTransactionType(TransactionType.LOCAL)
     // 两阶段事务（支持夸库事务）
-    @ShardingTransactionType(TransactionType.XA)
     @Transactional
     public Map<String, Object> addOrderData() {
         Map<String, Object> resultMaps = new HashMap<>();
