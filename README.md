@@ -1,0 +1,2 @@
+# sharding-jdbc
+sharding-jdbc .
