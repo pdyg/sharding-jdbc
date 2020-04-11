@@ -1,0 +1,97 @@
+spring:
+  shardingsphere:
+    orchestration:
+      name: '#治理实例名称'
+      overwrite: '#本地配置是否覆盖注册中心配置。如果可覆盖，每次启动都以本地配置为准'
+      registry:
+        digest: '#连接注册中心的权限令牌。缺省为不需要权限验证'
+        max-retries: '#连接失败后的最大重试次数，默认3次'
+        namespace: '#注册中心的命名空间'
+        operation-timeout-milliseconds: '#操作超时的毫秒数，默认500毫秒'
+        props: '#配置中心其它属性'
+        retry-interval-milliseconds: '#重试间隔毫秒数，默认500毫秒'
+        server-lists: '#连接注册中心服务器的列表。包括IP地址和端口号。多个地址用逗号分隔。如: host1:2181,host2:2181'
+        time-to-live-seconds: '#临时节点存活秒数，默认60秒'
+        type: '#配置中心类型。如：zookeeper'
+    encrypt:
+      encryptors:
+        <encryptor-name>:
+          props:
+            <property-name>: '#属性配置, 注意：使用AES加密器，需要配置AES加密器的KEY属性：aes.key.value'
+          type: '#加解密器类型，可自定义或选择内置类型：MD5/AES '
+      tables:
+        <table-name>:
+          columns:
+            <logic-column-name>:
+              assistedQueryColumn: '#辅助查询字段，针对ShardingQueryAssistedEncryptor类型的加解密器进行辅助查询'
+              cipherColumn: '#存储密文的字段'
+              encryptor: '#加密器名字'
+              plainColumn: '#存储明文的字段'
+    datasource:
+      <data-source-name>:
+        driver-class-name: '#数据库驱动类名'
+        password: '#数据库密码'
+        type: '#数据库连接池类名称'
+        url: '#数据库url连接'
+        username: '#数据库用户名'
+        xxx: '#数据库连接池的其它属性'
+      names: '#数据源名称，多数据源以逗号分隔'
+    props:
+      check:
+        table:
+          metadata:
+            enabled: '#是否在启动时检查分表元数据一致性，默认值: false'
+      executor:
+        size: '#工作线程数量，默认值: CPU核数'
+      sql:
+        show: '#是否开启SQL显示，默认值: false'
+    sharding:
+      binding-tables:
+        - '#绑定表规则列表'
+        - '#绑定表规则列表'
+      binding-tables[x]: '#绑定表规则列表'
+      broadcast-tables:
+        - '#广播表规则列表'
+        - '#广播表规则列表'
+      broadcast-tables[x]: '#广播表规则列表'
+      default-data-source-name: '#未配置分片规则的表将通过默认数据源定位'
+      default-database-strategy:
+        xxx: '#默认数据库分片策略，同分库策略'
+      default-key-generator:
+        props:
+          <property-name>: '#自增列值生成器属性配置, 比如SNOWFLAKE算法的worker.id与max.tolerate.time.difference.milliseconds'
+        type: '#默认自增列值生成器类型，缺省将使用org.apache.shardingsphere.core.keygen.generator.impl.SnowflakeKeyGenerator。可使用用户自定义的列值生成器或选择内置类型：SNOWFLAKE/UUID/LEAF_SEGMENT'
+      default-table-strategy:
+        xxx: '#默认表分片策略，同分表策略'
+      master-slave-rules:
+        <master-slave-data-source-name>:
+          load-balance-algorithm-class-name: '#从库负载均衡算法类名称。该类需实现MasterSlaveLoadBalanceAlgorithm接口且提供无参数构造器'
+          load-balance-algorithm-type: '#从库负载均衡算法类型，可选值：ROUND_ROBIN，RANDOM。若`load-balance-algorithm-class-name`存在则忽略该配置'
+          master-data-source-name: '#主库数据源名称'
+          slave-data-source-names:
+            - '#从库数据源名称列表'
+            - '#从库数据源名称列表'
+          slave-data-source-names[x]: '#从库数据源名称列表'
+      tables:
+        <logic-table-name>:
+          actual-data-nodes: '#由数据源名 + 表名组成，以小数点分隔。多个表以逗号分隔，支持inline表达式。缺省表示使用已知数据源与逻辑表名称生成数据节点。用于广播表（即每个库中都需要一个同样的表用于关联查询，多为字典表）或只分库不分表且所有库的表结构完全一致的情况'
+          database-strategy:
+            complex:
+              algorithm-class-name: '#复合分片算法类名称。该类需实现ComplexKeysShardingAlgorithm接口并提供无参数的构造器'
+              sharding-columns: '#分片列名称，多个列以逗号分隔'
+            hint:
+              algorithm-class-name: '#Hint分片算法类名称。该类需实现HintShardingAlgorithm接口并提供无参数的构造器'
+            inline:
+              algorithm-expression: '#分片算法行表达式，需符合groovy语法'
+              sharding-column: '#分片列名称'
+            standard:
+              precise-algorithm-class-name: '#精确分片算法类名称，用于=和IN。该类需实现PreciseShardingAlgorithm接口并提供无参数的构造器'
+              range-algorithm-class-name: '#范围分片算法类名称，用于BETWEEN，可选。该类需实现RangeShardingAlgorithm接口并提供无参数的构造器'
+              sharding-column: '#分片列名称'
+          key-generator:
+            column: '#自增列名称，缺省表示不使用自增主键生成器'
+            props:
+              <property-name>: '#属性配置, 注意：使用SNOWFLAKE算法，需要配置worker.id与max.tolerate.time.difference.milliseconds属性'
+            type: '#自增列值生成器类型，缺省表示使用默认自增列值生成器。可使用用户自定义的列值生成器或选择内置类型：SNOWFLAKE/UUID/LEAF_SEGMENT'
+          table-strategy:
+            xxx: '#省略'
