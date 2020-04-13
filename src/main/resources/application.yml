@@ -1,15 +1,15 @@
 server:
   port: 8080
-spring:
-  application:
-    name: shatding-springboot-mybatis
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   type-aliases-package: com.pdy.entity
-sharding:
-  jdbc:
+
+spring:
+  application:
+    name: shatding-springboot-mybatis
+  shardingsphere:
     datasource:
-      names: ds0,ds1 # 数据源名称，多数据源以逗号分隔
+      names: ds0,ds1
       ds0:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
@@ -23,62 +23,70 @@ sharding:
         jdbc-url: jdbc:mysql://192.168.1.188:3306/pdy_1
         username: root
         password: mysql
-    config:
-      props:
-        sql:
-          show: true # 是否开启SQL显示，默认值: false
-      sharding:
-        broadcast-tables: public_test_tb #广播表规则列表1
-        binding-tables: #配置多个绑定表
+
+    props:
+      sql:
+        show: true
+    sharding:
+      broadcast-tables: public_test_tb #广播表规则列表1
+      binding-tables: #配置多个绑定表
           - t_order,t_merchantid
           - t_address,t_user
-        tables:
-          t_user:  #t_user表
-            actual-data-nodes:     ds$->{0..1}.t_user$->{0..1}                #数据节点,均匀分布
-            database-strategy:   #分库策略 注：分库ID不能与分表ID一样
-              inline: #行表达式
-                sharding-column: city_id        #列名称，多个列以逗号分隔
-                algorithm-expression: ds$->{city_id % 2}    #按模运算分配
+      tables:
+        t_user:  #t_user表
+          actual-data-nodes:     ds$->{0..1}.t_user$->{0..1}                #数据节点,均匀分布
+          database-strategy:   #分库策略 注：分库ID不能与分表ID一样
+            inline: #行表达式
+              sharding-column: city_id        #列名称，多个列以逗号分隔
+              algorithm-expression: ds$->{city_id % 2}    #按模运算分配
 
-            table-strategy:  #分表策略
-              inline: #行表达式
-                sharding-column: sex
-                algorithm-expression: t_user$->{sex % 2}
-            key-generator-column-name: id  #主键生成 雪花算法
-          t_address:
-            key-generator-column-name: id
-            actual-data-nodes: ds${0..1}.t_address
-            database-strategy:
-              inline:
-                sharding-column: lit
-                algorithm-expression: ds$->{lit % 2}
-          t_order:  #t_order表
-            key-generator-column-name: id  #主键生成 雪花算法
-            actual-data-nodes:     ds$->{0..1}.t_order$->{0..1}                #数据节点,均匀分布
-            database-strategy:   #分库策略 注：分库ID不能与分表ID一样
-              inline: #行表达式
-                sharding-column: merchantId        #列名称，多个列以逗号分隔
-                algorithm-expression: ds$->{merchantId % 2}    #按模运算分配
-            table-strategy:  #分表策略
-              inline: #行表达式
-                sharding-column: orderType
-                algorithm-expression: t_order$->{orderType % 2}
+          table-strategy:  #分表策略
+            inline: #行表达式
+              sharding-column: sex
+              algorithm-expression: t_user$->{sex % 2}
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+        t_address:
+          key-generator-column-name: id
+          actual-data-nodes: ds${0..1}.t_address
+          database-strategy:
+            inline:
+              sharding-column: lit
+              algorithm-expression: ds$->{lit % 2}
+        t_order:  #t_order表
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+          actual-data-nodes:     ds$->{0..1}.t_order$->{0..1}                #数据节点,均匀分布
+          database-strategy:   #分库策略 注：分库ID不能与分表ID一样
+            inline: #行表达式
+              sharding-column: merchantId        #列名称，多个列以逗号分隔
+              algorithm-expression: ds$->{merchantId % 2}    #按模运算分配
+          table-strategy:  #分表策略
+            inline: #行表达式
+              sharding-column: orderType
+              algorithm-expression: t_order$->{orderType % 2}
 
-          t_order_pay:  #t_order_pay表
-            key-generator-column-name: id  #主键生成 雪花算法
-            actual-data-nodes:     ds$->{0..1}.t_order_pay$->{0..1}                #数据节点,均匀分布
-            database-strategy:   #分库策略 注：分库ID不能与分表ID一样
-              inline: #行表达式
-                sharding-column: merchantId        #列名称，多个列以逗号分隔
-                algorithm-expression: ds$->{merchantId % 2}    #按模运算分配
-            table-strategy:  #分表策略
-              inline: #行表达式
-                sharding-column: payType
-                algorithm-expression: t_order_pay$->{payType % 2}
-          t_merchantid:
-            key-generator-column-name: id
-            actual-data-nodes: ds${0..1}.t_merchantid
-            database-strategy:
-              inline:
-                sharding-column: id
-                algorithm-expression: ds$->{id % 2}
+        t_order_pay:  #t_order_pay表
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+          actual-data-nodes:     ds$->{0..1}.t_order_pay$->{0..1}                #数据节点,均匀分布
+          database-strategy:   #分库策略 注：分库ID不能与分表ID一样
+            inline: #行表达式
+              sharding-column: merchantId        #列名称，多个列以逗号分隔
+              algorithm-expression: ds$->{merchantId % 2}    #按模运算分配
+          table-strategy:  #分表策略
+            inline: #行表达式
+              sharding-column: payType
+              algorithm-expression: t_order_pay$->{payType % 2}
+        t_merchantid:
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+          actual-data-nodes: ds${0..1}.t_merchantid
+          database-strategy:
+            inline:
+              sharding-column: id
+              algorithm-expression: ds$->{id % 2}
